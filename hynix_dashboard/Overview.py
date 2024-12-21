@@ -45,10 +45,6 @@ def fetch_image_from_github(username, repo, path, token):
     headers = {"Authorization": f"token {token}"}
     response = requests.get(url, headers=headers)
 
-    # 디버깅: 요청 정보 출력
-    st.write(f"Request URL: {url}")
-    st.write(f"Response Status Code: {response.status_code}")
-
     if response.status_code == 200:
         # Base64로 인코딩된 이미지 데이터 추출
         image_data = response.json().get("content")
