@@ -22,14 +22,22 @@ REPO = "hynix-streamlit"
 ## 📘 하단 영역 (배경 포함)
 
 ### 📘 이미지와 설명 텍스트 추가
-image_paths = [
+# image_paths = [
+#     "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/hynix_dashboard/heatmap_images/heatmap_1.png",
+#     "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/hynix_dashboard/heatmap_images/heatmap_2.png",
+#     "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/hynix_dashboard/heatmap_images/heatmap_3.png",
+#     "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/hynix_dashboard/heatmap_images/heatmap_4.png",
+#     "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/hynix_dashboard/heatmap_images/heatmap_5.png"
+# ]
 
-    "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/hynix_dashboard/heatmap_images/heatmap_1.png",
-    "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/hynix_dashboard/heatmap_images/heatmap_2.png",
-    "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/hynix_dashboard/heatmap_images/heatmap_3.png",
-    "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/hynix_dashboard/heatmap_images/heatmap_4.png",
-    "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/hynix_dashboard/heatmap_images/heatmap_5.png"
+image_paths = [
+    "hynix_dashboard/heatmap_images/heatmap_1.png",
+    "hynix_dashboard/heatmap_images/heatmap_2.png",
+    "hynix_dashboard/heatmap_images/heatmap_3.png",
+    "hynix_dashboard/heatmap_images/heatmap_4.png",
+    "hynix_dashboard/heatmap_images/heatmap_5.png"
 ]
+
 
 ### feature 이름 (하드코딩된 상태, 대체 해야함)
 image_descriptions = [
