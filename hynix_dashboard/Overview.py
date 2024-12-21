@@ -39,6 +39,7 @@ image_descriptions = [
     "X5"
 ]
 # GitHub API에서 이미지 가져오기
+@st.cache_data
 def fetch_image_from_github(username, repo, path, token):
     # GitHub API URL
     url = f"https://api.github.com/repos/{username}/{repo}/contents/{path}"
