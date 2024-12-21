@@ -14,11 +14,11 @@ st.set_page_config(
 
 ### 📘 이미지와 설명 텍스트 추가
 image_paths = [
-    "raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/heatmap_images/heatmap_1.png",
-    "raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/heatmap_images/heatmap_2.png",
-    "raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/heatmap_images/heatmap_3.png",
-    "raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/heatmap_images/heatmap_4.png",
-    "raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/heatmap_images/heatmap_5.png"
+    "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/heatmap_images/heatmap_1.png",
+    "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/heatmap_images/heatmap_2.png",
+    "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/heatmap_images/heatmap_3.png",
+    "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/heatmap_images/heatmap_4.png",
+    "https://raw.githubusercontent.com/jiyoung-data/hynix-streamlit/main/heatmap_images/heatmap_5.png"
 ]
 
 ### feature 이름 (하드코딩된 상태, 대체 해야함)
