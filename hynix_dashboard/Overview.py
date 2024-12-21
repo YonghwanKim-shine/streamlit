@@ -31,11 +31,11 @@ REPO = "hynix-streamlit"
 # ]
 
 image_paths = [
-    "https://github.com/jiyoung-data/hynix-streamlit/blob/main/hynix_dashboard/heatmap_images/heatmap_1.png",
-    "https://github.com/jiyoung-data/hynix-streamlit/blob/main/hynix_dashboard/heatmap_images/heatmap_2.png",
-    "https://github.com/jiyoung-data/hynix-streamlit/blob/main/hynix_dashboard/heatmap_images/heatmap_3.png",
-    "https://github.com/jiyoung-data/hynix-streamlit/blob/main/hynix_dashboard/heatmap_images/heatmap_4.png",
-    "https://github.com/jiyoung-data/hynix-streamlit/blob/main/hynix_dashboard/heatmap_images/heatmap_5.png"
+    "hynix_dashboard/heatmap_images/heatmap_1.png",
+    "hynix_dashboard/heatmap_images/heatmap_2.png",
+    "hynix_dashboard/heatmap_images/heatmap_3.png",
+    "hynix_dashboard/heatmap_images/heatmap_4.png",
+    "hynix_dashboard/heatmap_images/heatmap_5.png"
 ]
 
 
@@ -78,16 +78,17 @@ image_descriptions = [
 #             st.image(image, caption=image_descriptions[i], width=150)
 
 
-# GitHub API로 이미지 가져오는 함수
+
+# GitHub API에서 이미지 가져오기
 def fetch_image_from_github(username, repo, path, token):
+    # GitHub API URL
     url = f"https://api.github.com/repos/{username}/{repo}/contents/{path}"
     headers = {"Authorization": f"token {token}"}
     response = requests.get(url, headers=headers)
 
-    # 디버깅용 응답 출력
+    # 디버깅: 요청 정보 출력
     st.write(f"Request URL: {url}")
     st.write(f"Response Status Code: {response.status_code}")
-    st.write(f"Response Text: {response.text}")
 
     if response.status_code == 200:
         # Base64로 인코딩된 이미지 데이터 추출
@@ -107,15 +108,13 @@ st.title("WT Dashboard")
 
 cols = st.columns(len(image_paths))
 
+# 이미지 출력
 for i, image_path in enumerate(image_paths):
     with cols[i]:
         image_bytes = fetch_image_from_github(USERNAME, REPO, image_path, GITHUB_TOKEN)
         if image_bytes:
-            try:
-                image = Image.open(image_bytes)
-                st.image(image, caption=f"Image {i+1}", width=150)
-            except Exception as e:
-                st.error(f"Image Load Error: {e}")
+            image = Image.open(image_bytes)
+            st.image(image, caption=image_descriptions[i], width=150)
 
 
 
