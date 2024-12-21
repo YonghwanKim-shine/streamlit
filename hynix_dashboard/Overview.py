@@ -6,8 +6,8 @@ from io import BytesIO
 
 # 페이지 기본 설정
 st.set_page_config(
-    page_title="WT dashboard",
-    page_icon="🍔",
+    page_title="Wafer Test Overview",
+    page_icon="https://img.icons8.com/emoji/48/000000/hamburger-emoji.png",
     layout="wide"
 )
 
