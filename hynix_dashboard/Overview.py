@@ -31,11 +31,11 @@ REPO = "hynix-streamlit"
 # ]
 
 image_paths = [
-    "hynix_dashboard/heatmap_images/heatmap_1.png",
-    "hynix_dashboard/heatmap_images/heatmap_2.png",
-    "hynix_dashboard/heatmap_images/heatmap_3.png",
-    "hynix_dashboard/heatmap_images/heatmap_4.png",
-    "hynix_dashboard/heatmap_images/heatmap_5.png"
+    "https://github.com/jiyoung-data/hynix-streamlit/blob/main/hynix_dashboard/heatmap_images/heatmap_1.png",
+    "https://github.com/jiyoung-data/hynix-streamlit/blob/main/hynix_dashboard/heatmap_images/heatmap_2.png",
+    "https://github.com/jiyoung-data/hynix-streamlit/blob/main/hynix_dashboard/heatmap_images/heatmap_3.png",
+    "https://github.com/jiyoung-data/hynix-streamlit/blob/main/hynix_dashboard/heatmap_images/heatmap_4.png",
+    "https://github.com/jiyoung-data/hynix-streamlit/blob/main/hynix_dashboard/heatmap_images/heatmap_5.png"
 ]
 
 
