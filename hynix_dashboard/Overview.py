@@ -48,34 +48,74 @@ image_descriptions = [
     "X5"
 ]
 
-# 📘 함수: GitHub API에서 이미지 가져오기
+# # 📘 함수: GitHub API에서 이미지 가져오기
+# def fetch_image_from_github(username, repo, path, token):
+#     url = f"https://api.github.com/repos/{username}/{repo}/contents/{path}"
+#     headers = {"Authorization": f"token {token}"}
+#     response = requests.get(url, headers=headers)
+#     if response.status_code == 200:
+#         # Base64로 인코딩된 이미지 데이터 디코딩
+#         image_data = response.json().get("content")
+#         if image_data:
+#             return BytesIO(base64.b64decode(image_data))
+#     else:
+#         st.error(f"Error {response.status_code}: Unable to fetch {path}")
+#         return None
+#
+# # 📘 Streamlit UI
+# st.title("WT Dashboard")
+#
+# # 📘 하단 영역: 이미지 출력
+# st.markdown("### 📋 이미지 영역")
+# cols = st.columns(len(image_paths))  # 이미지 갯수만큼 열 생성
+#
+# for i, image_path in enumerate(image_paths):
+#     with cols[i]:
+#         # GitHub에서 이미지 가져오기
+#         image_bytes = fetch_image_from_github(USERNAME, REPO, image_path, GITHUB_TOKEN)
+#         if image_bytes:
+#             image = Image.open(image_bytes)
+#             st.image(image, caption=image_descriptions[i], width=150)
+
+
+# GitHub API로 이미지 가져오는 함수
 def fetch_image_from_github(username, repo, path, token):
     url = f"https://api.github.com/repos/{username}/{repo}/contents/{path}"
     headers = {"Authorization": f"token {token}"}
     response = requests.get(url, headers=headers)
+
+    # 디버깅용 응답 출력
+    st.write(f"Request URL: {url}")
+    st.write(f"Response Status Code: {response.status_code}")
+    st.write(f"Response Text: {response.text}")
+
     if response.status_code == 200:
-        # Base64로 인코딩된 이미지 데이터 디코딩
+        # Base64로 인코딩된 이미지 데이터 추출
         image_data = response.json().get("content")
         if image_data:
-            return BytesIO(base64.b64decode(image_data))
+            try:
+                return BytesIO(base64.b64decode(image_data))
+            except Exception as e:
+                st.error(f"Decoding Error: {e}")
+                return None
     else:
         st.error(f"Error {response.status_code}: Unable to fetch {path}")
         return None
 
-# 📘 Streamlit UI
+# Streamlit UI
 st.title("WT Dashboard")
 
-# 📘 하단 영역: 이미지 출력
-st.markdown("### 📋 이미지 영역")
-cols = st.columns(len(image_paths))  # 이미지 갯수만큼 열 생성
+cols = st.columns(len(image_paths))
 
 for i, image_path in enumerate(image_paths):
     with cols[i]:
-        # GitHub에서 이미지 가져오기
         image_bytes = fetch_image_from_github(USERNAME, REPO, image_path, GITHUB_TOKEN)
         if image_bytes:
-            image = Image.open(image_bytes)
-            st.image(image, caption=image_descriptions[i], width=150)
+            try:
+                image = Image.open(image_bytes)
+                st.image(image, caption=f"Image {i+1}", width=150)
+            except Exception as e:
+                st.error(f"Image Load Error: {e}")
 
 
 
@@ -100,4 +140,6 @@ for i, image_path in enumerate(image_paths):
 #         </div>
 #     </div>
 # """, unsafe_allow_html=True)
+
+
 
