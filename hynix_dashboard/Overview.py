@@ -12,10 +12,10 @@ st.set_page_config(
 
 
 # GitHub Personal Access Token (PAT)
-GITHUB_TOKEN = "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"
+github_token = "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"
 
-USERNAME = "jiyoung-data"
-REPO = "hynix-streamlit"
+username = "jiyoung-data"
+repo = "hynix-streamlit"
 
 # 앞단
 
@@ -111,12 +111,10 @@ cols = st.columns(len(image_paths))
 # 이미지 출력
 for i, image_path in enumerate(image_paths):
     with cols[i]:
-        image_bytes = fetch_image_from_github(USERNAME, REPO, image_path, GITHUB_TOKEN)
+        image_bytes = fetch_image_from_github(username, repo, image_path, github_token)
         if image_bytes:
             image = Image.open(image_bytes)
             st.image(image, caption=image_descriptions[i], width=150)
-
-
 
 # ### 📘 HTML 코드 생성 (f-string 방식)
 # image_html = ''.join([
