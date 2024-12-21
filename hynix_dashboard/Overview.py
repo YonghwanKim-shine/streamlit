@@ -6,8 +6,8 @@ from io import BytesIO
 
 # 페이지 기본 설정
 st.set_page_config(
-    page_title="Wafer Test Overview",
-    page_icon="https://img.icons8.com/emoji/48/000000/hamburger-emoji.png",
+    page_title="WT Dashboard",
+    page_icon="🍔",
     layout="wide"
 )
 
@@ -60,7 +60,7 @@ def fetch_image_from_github(username, repo, path, token):
         return None
 
 # Streamlit UI
-st.title("WT Dashboard")
+st.title("Wafer Test Overview")
 
 cols = st.columns(len(image_paths))
 
