@@ -9,7 +9,7 @@ url_position_3 = "https://drive.google.com/uc?id=1Q0S8UAyvX7cHsOAbhcS026y0EFHmBy
 url_position_4 = "https://drive.google.com/uc?id=18KindmSQqoQuu4iV7ySE9q4cETC10Lf5"
 
 # 파일 다운로드
-@st.cache_data
+#@st.cache_data
 def download_file(url, output_path):
     gdown.download(url, output_path, quiet=False)
     return output_path
