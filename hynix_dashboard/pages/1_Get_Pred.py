@@ -24,7 +24,30 @@ df2 = pd.read_csv(file_path_2)
 df3 = pd.read_csv(file_path_3)
 df4 = pd.read_csv(file_path_4)
 
-st.write(df1.head())
-st.write(df2.head())
-st.write(df3.head())
-st.write(df4.head())
+df = pd.concat([df1,df2,df3,df4], axis=0)
+
+# 목록 불러오는 기능
+df[['Lot', 'Wafer', 'DieX', 'DieY']] = df['run_wf_xy'].str.split('_', expand=True)
+#print(df)
+
+lot_list = df['Lot'].unique()
+print(lot_list)
+
+wafer_list = df['Wafer'].unique()
+wafer_list = sorted(list(map(int, wafer_list)))
+print(wafer_list)
+
+
+# 앞단
+# 페이지 기본 설정
+st.set_page_config(
+    page_title="WT Dashboard",
+    page_icon="🍔",
+    layout="wide"
+)
+
+st.title("Get Pred")
+
+selected_option = st.selectbox('Lot', lot_list)
+#st.selectbox('Wafer', wafer_list)
+st.write('Lot', selected_option)
