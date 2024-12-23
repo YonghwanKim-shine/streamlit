@@ -53,6 +53,8 @@ print(wafer_list)
 
 st.title("Get Pred")
 
-selected_option = st.selectbox('Lot', lot_list)
+selected_option_lot = st.selectbox('Lot', lot_list)
+selected_option_wafer = st.selectbox('Wafer', lot_list)
 #st.selectbox('Wafer', wafer_list)
-st.write('Lot', selected_option)
+st.write('Lot', selected_option_lot)
+st.write('Wafer', selected_option_wafer)
