@@ -2,6 +2,12 @@ import pandas as pd
 import gdown
 import streamlit as st
 
+st.set_page_config(
+    page_title="WT Dashboard",
+    page_icon="🍔",
+    layout="wide"
+)
+
 # Google Drive 공유 링크
 url_position_1 = "https://drive.google.com/uc?id=1ajvBW_OH96xtlJZ9aronGZsbtRJkuswp"
 # url_position_2 = "https://drive.google.com/uc?id=19YOKChOwa4S6ynO00SKauMPaZtfPuQkC"
@@ -44,11 +50,6 @@ print(wafer_list)
 
 # 앞단
 # 페이지 기본 설정
-st.set_page_config(
-    page_title="WT Dashboard",
-    page_icon="🍔",
-    layout="wide"
-)
 
 st.title("Get Pred")
 
