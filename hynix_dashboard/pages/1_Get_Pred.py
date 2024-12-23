@@ -41,11 +41,10 @@ df[['Lot', 'Wafer', 'DieX', 'DieY']] = df['run_wf_xy'].str.split('_', expand=Tru
 #print(df)
 
 lot_list = df['Lot'].unique()
-print(lot_list)
 
 wafer_list = df['Wafer'].unique()
 wafer_list = sorted(list(map(int, wafer_list)))
-print(wafer_list)
+wafer_list = map(str, wafer_list)
 
 
 # 앞단
