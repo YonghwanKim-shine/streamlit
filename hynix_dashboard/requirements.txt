@@ -3,3 +3,4 @@ numpy
 gdown
 plotly
 matplotlib
+streamlit-plotly-events
