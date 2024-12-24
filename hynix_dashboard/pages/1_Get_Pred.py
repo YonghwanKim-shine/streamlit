@@ -119,6 +119,12 @@ with st.container():
     with col2:
         st.subheader("클릭 이벤트 결과")
         if not heatmap_data.empty and selected_points:
-            st.write(f"Clicked data: {selected_points[0]}")
+            # 클릭된 데이터 처리
+            point = selected_points[0]
+            x, y = int(point['x']), int(point['y'])
+
+            # 클릭된 좌표를 기반으로 z 값 조회
+            z_value = matrix[y, x] if 0 <= y < matrix.shape[0] and 0 <= x < matrix.shape[1] else "N/A"
+            st.write(f"Clicked data: x={x}, y={y}, z={z_value}")
         else:
             st.write("No data selected")
