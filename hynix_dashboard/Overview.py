@@ -11,6 +11,23 @@ st.set_page_config(
 
 st.title("Wafer Test Overview")
 
+
+
+
+
+
+## 실제 데이터로 변경해야함
+dates = pd.date_range(start="2020-11-07", end="2020-11-11")
+values = np.random.rand(len(dates))
+dummy_df = pd.DataFrame({
+    "Date": dates,
+    "Value": values
+})
+# 라인 차트 표시
+st.line_chart(data=dummy_df.set_index("Date"))
+
+
+
 # 임시 데이터 생성
 np.random.seed(42)  # 재현성을 위해 시드 설정
 lot_numbers = [f"Lot{i}" for i in range(1, 11)]  # Lot 번호
