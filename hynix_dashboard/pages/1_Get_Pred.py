@@ -111,11 +111,11 @@ if "run_button_enabled" not in st.session_state:
     st.session_state["run_button_enabled"] = False
 
 
-# 좌측: 히트맵 출력
+
 with st.container():
     col1, col2 = st.columns(2)
 
-    # 왼쪽: 히트맵 출력
+    # 왼쪽: 히트맵 출력 및 클릭 이벤트 처리
     with col1:
         st.subheader("wafer의 히트맵")
         heatmap_fig = create_heatmap(matrix)
@@ -128,28 +128,25 @@ with st.container():
             x, y = int(point['x']), int(point['y'])
             z = matrix[y, x] if 0 <= y < matrix.shape[0] and 0 <= x < matrix.shape[1] else None
 
-            # 좌표 추가 (최대 4개까지)
             if len(st.session_state["clicked_points"]) < 4:
                 st.session_state["clicked_points"].append({"x": x, "y": y, "z": z})
 
-            # 실행 버튼 활성화 조건 확인
-            if len(st.session_state["clicked_points"]) == 4:
-                st.session_state["run_button_enabled"] = True
+            # 실행 버튼 활성화 상태 갱신
+            st.session_state["run_button_enabled"] = len(st.session_state["clicked_points"]) == 4
 
-    # 오른쪽: 클릭 결과와 삭제 기능
+    # 오른쪽: 클릭 결과 및 삭제 버튼
     with col2:
         st.subheader("클릭 결과")
         for i, point in enumerate(st.session_state["clicked_points"]):
             st.write(f"{i+1}. x={point['x']}, y={point['y']}, z={point['z']}")
-            # 삭제 버튼
             if st.button(f"삭제 {i+1}", key=f"delete_{i}"):
                 st.session_state["clicked_points"].pop(i)
-                st.session_state["run_button_enabled"] = False  # 실행 버튼 비활성화
-                st.experimental_rerun()  # UI 갱신
+                st.session_state["run_button_enabled"] = len(st.session_state["clicked_points"]) == 4
 
         # 실행하기 버튼
+        st.subheader("작업 실행")
         if st.session_state["run_button_enabled"]:
             if st.button("실행하기"):
-                st.success("실행 완료!")
+                st.success("작업이 실행되었습니다!")
         else:
             st.button("실행하기", disabled=True)
