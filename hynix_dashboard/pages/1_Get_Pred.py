@@ -101,30 +101,55 @@ def create_heatmap(matrix):
     )
     return heatmap_fig
 
+
+# 좌표 클릭 기록 관리
+if "clicked_points" not in st.session_state:
+    st.session_state["clicked_points"] = []
+
+# 실행 버튼 상태 관리
+if "run_button_enabled" not in st.session_state:
+    st.session_state["run_button_enabled"] = False
+
+
+# 좌측: 히트맵 출력
 with st.container():
     col1, col2 = st.columns(2)
 
-    # 왼쪽 컬럼: 히트맵 출력 및 클릭 이벤트 감지
+    # 왼쪽: 히트맵 출력
     with col1:
         st.subheader("wafer의 히트맵")
-        if not heatmap_data.empty:
-            # 히트맵 생성
-            heatmap_fig = create_heatmap(pd.DataFrame(matrix))
-            # 히트맵 출력 및 클릭 이벤트 감지
-            selected_points = plotly_events(heatmap_fig, click_event=True)
-        else:
-            st.write("조건을 만족하는 데이터가 없습니다.")
+        heatmap_fig = create_heatmap(matrix)
+        selected_points = plotly_events(heatmap_fig, click_event=True)
+        st.plotly_chart(heatmap_fig)
 
-    # 오른쪽 컬럼: 클릭 이벤트 결과 출력
-    with col2:
-        st.subheader("클릭 이벤트 결과")
-        if not heatmap_data.empty and selected_points:
-            # 클릭된 데이터 처리
+        # 클릭 이벤트 처리
+        if selected_points:
             point = selected_points[0]
             x, y = int(point['x']), int(point['y'])
+            z = matrix[y, x] if 0 <= y < matrix.shape[0] and 0 <= x < matrix.shape[1] else None
 
-            # 클릭된 좌표를 기반으로 z 값 조회
-            z_value = matrix[y, x] if 0 <= y < matrix.shape[0] and 0 <= x < matrix.shape[1] else "N/A"
-            st.write(f"Clicked data: x={x}, y={y}, z={z_value}")
+            # 좌표 추가 (최대 4개까지)
+            if len(st.session_state["clicked_points"]) < 4:
+                st.session_state["clicked_points"].append({"x": x, "y": y, "z": z})
+
+            # 실행 버튼 활성화 조건 확인
+            if len(st.session_state["clicked_points"]) == 4:
+                st.session_state["run_button_enabled"] = True
+
+    # 오른쪽: 클릭 결과와 삭제 기능
+    with col2:
+        st.subheader("클릭 결과")
+        for i, point in enumerate(st.session_state["clicked_points"]):
+            st.write(f"{i+1}. x={point['x']}, y={point['y']}, z={point['z']}")
+            # 삭제 버튼
+            if st.button(f"삭제 {i+1}", key=f"delete_{i}"):
+                st.session_state["clicked_points"].pop(i)
+                st.session_state["run_button_enabled"] = False  # 실행 버튼 비활성화
+                st.experimental_rerun()  # UI 갱신
+
+        # 실행하기 버튼
+        if st.session_state["run_button_enabled"]:
+            if st.button("실행하기"):
+                st.success("실행 완료!")
         else:
-            st.write("No data selected")
+            st.button("실행하기", disabled=True)
