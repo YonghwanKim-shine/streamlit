@@ -112,7 +112,6 @@ with st.container():
             heatmap_fig = create_heatmap(pd.DataFrame(matrix))
             # 히트맵 출력 및 클릭 이벤트 감지
             selected_points = plotly_events(heatmap_fig, click_event=True)
-            st.plotly_chart(heatmap_fig)  # 히트맵 표시
         else:
             st.write("조건을 만족하는 데이터가 없습니다.")
 
