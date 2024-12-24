@@ -11,57 +11,58 @@ st.set_page_config(
 
 st.title("Wafer Test Overview")
 
-# 라인차트
-st.subheader("Weekly Health Chart")
-dates = pd.date_range(start="2020-11-07", end="2020-11-11")
-values = np.random.rand(len(dates))
-dummy_df = pd.DataFrame({
-    "Date": dates,
-    "Value": values
-})
-st.line_chart(data=dummy_df.set_index("Date"))
-
-# 주요 변수
-st.subheader("웨이퍼별 로스율 예측값")
-
-# Lot번호_Wafer번호_예측값 데이터 생성
-lot_numbers = [f"Lot{i}" for i in range(1, 21)]
-wafer_numbers = [f"W{i}" for i in range(1, 21)]
+# 임시 데이터 생성
+np.random.seed(42)  # 재현성을 위해 시드 설정
+lot_numbers = [f"Lot{i}" for i in range(1, 11)]  # Lot 번호
 data = []
 
 for lot in lot_numbers:
-    for wafer in wafer_numbers:
-        pred_value = np.round(np.random.rand(), 3)  # 랜덤 예측값 생성
-        data.append([lot, wafer, pred_value])
+    wafer_count = np.random.randint(5, 15)  # 각 Lot의 웨이퍼 개수 랜덤 생성
+    for wafer in range(1, wafer_count + 1):
+        data.append({
+            "Lot번호": lot,
+            "Wafer번호": f"W{wafer}",
+            "컬럼1": np.round(np.random.rand() * 100, 2),
+            "컬럼2": np.round(np.random.rand() * 100, 2),
+            "컬럼3": np.round(np.random.rand() * 100, 2),
+        })
 
-loss_df = pd.DataFrame(data, columns=["Lot번호", "Wafer번호", "예측값"])
-st.dataframe(loss_df, height=400)
+# 데이터프레임 생성
+df = pd.DataFrame(data)
 
-# 특정 웨이퍼 선택
-st.subheader("웨이퍼 데이터 상세 분석")
+# 데이터 미리보기
+st.subheader("전체 데이터 미리보기")
+st.dataframe(df, height=300)
+
+# Lot 선택
+st.subheader("로트 및 웨이퍼 선택")
+selected_lot = st.selectbox("Lot을 선택하세요:", options=df["Lot번호"].unique())
+
+# Wafer 선택 (선택한 Lot에 종속)
 selected_wafer = st.selectbox(
-    "웨이퍼를 선택하세요:",
-    options=loss_df["Wafer번호"].unique()
+    "Wafer를 선택하세요:",
+    options=df[df["Lot번호"] == selected_lot]["Wafer번호"].unique()
 )
 
-# 컬럼 지정
+# 컬럼 선택
+st.subheader("분석할 컬럼 선택")
 columns_to_analyze = st.multiselect(
     "분석할 컬럼을 선택하세요:",
-    options=["예측값"],
-    default=["예측값"]
+    options=["컬럼1", "컬럼2", "컬럼3"],
+    default=["컬럼1", "컬럼2"]
 )
 
 if columns_to_analyze:
     # 전체 데이터 기반 평균값
-    overall_avg = loss_df[columns_to_analyze].mean().to_frame(name="전체 평균")
+    overall_avg = df[columns_to_analyze].mean().to_frame(name="전체 평균")
 
-    # 선택한 웨이퍼의 데이터 기반 평균값
-    wafer_data = loss_df[loss_df["Wafer번호"] == selected_wafer]
-    wafer_avg = wafer_data[columns_to_analyze].mean().to_frame(name=f"{selected_wafer} 평균")
+    # 선택한 Lot, Wafer 데이터 기반 평균값
+    selected_data = df[(df["Lot번호"] == selected_lot) & (df["Wafer번호"] == selected_wafer)]
+    wafer_avg = selected_data[columns_to_analyze].mean().to_frame(name=f"{selected_lot}-{selected_wafer} 평균")
 
     # 데이터프레임 출력
     st.write("### 전체 데이터 기반 평균값")
     st.dataframe(overall_avg)
 
-    st.write(f"### {selected_wafer} 데이터 기반 평균값")
+    st.write(f"### {selected_lot}-{selected_wafer} 데이터 기반 평균값")
     st.dataframe(wafer_avg)
