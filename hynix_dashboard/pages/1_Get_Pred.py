@@ -95,8 +95,8 @@ def create_heatmap(matrix):
     heatmap_fig.update_layout(
         xaxis=dict(showticklabels=False),
         yaxis=dict(showticklabels=False),
-        width=600,
-        height=600,
+        width=500,
+        height=400,
         margin=dict(l=30, r=10, t=10, b=10)
     )
     return heatmap_fig
@@ -104,22 +104,22 @@ def create_heatmap(matrix):
 with st.container():
     col1, col2 = st.columns(2)
 
-    # 왼쪽 컬럼: 히트맵 출력
+    # 왼쪽 컬럼: 히트맵 출력 및 클릭 이벤트 감지
     with col1:
         st.subheader("wafer의 히트맵")
         if not heatmap_data.empty:
+            # 히트맵 생성
             heatmap_fig = create_heatmap(pd.DataFrame(matrix))
-            st.plotly_chart(heatmap_fig)
+            # 히트맵 출력 및 클릭 이벤트 감지
+            selected_points = plotly_events(heatmap_fig, click_event=True)
+            st.plotly_chart(heatmap_fig)  # 히트맵 표시
         else:
             st.write("조건을 만족하는 데이터가 없습니다.")
 
-    # 오른쪽 컬럼: 클릭 이벤트 출력
+    # 오른쪽 컬럼: 클릭 이벤트 결과 출력
     with col2:
         st.subheader("클릭 이벤트 결과")
-        if not heatmap_data.empty:
-            # 클릭 이벤트 처리
-            selected_points = plotly_events(heatmap_fig, click_event=True)
-            if selected_points:
-                st.write(f"Clicked data: {selected_points[0]}")
-            else:
-                st.write("No data selected")
+        if not heatmap_data.empty and selected_points:
+            st.write(f"Clicked data: {selected_points[0]}")
+        else:
+            st.write("No data selected")
