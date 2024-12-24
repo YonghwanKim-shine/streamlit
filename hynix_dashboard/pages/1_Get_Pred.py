@@ -54,10 +54,10 @@ wafer_list = list(map(str, wafer_list))
 
 # 왼쪽 페이지
 # 페이지 기본 설정
+st.title("Get Pred")
 
 with st.container():
     col1, col2 = st.columns(2)
-    st.title("Get Pred")
 
     with col1:
         st.subheader("Lot 선택")
