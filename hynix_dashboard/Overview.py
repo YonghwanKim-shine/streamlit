@@ -30,19 +30,23 @@ for lot in lot_numbers:
 # 데이터프레임 생성
 df = pd.DataFrame(data)
 
-# 데이터 미리보기
-st.subheader("전체 데이터 미리보기")
-st.dataframe(df, height=300)
+# 가로 열 배치
+col1, col2 = st.columns(2)
 
-# Lot 선택
-st.subheader("로트 및 웨이퍼 선택")
-selected_lot = st.selectbox("Lot을 선택하세요:", options=df["Lot번호"].unique())
+# 왼쪽 열: 전체 데이터 미리보기
+with col1:
+    st.subheader("전체 데이터 미리보기")
+    st.dataframe(df, height=300)
 
-# Wafer 선택 (선택한 Lot에 종속)
-selected_wafer = st.selectbox(
-    "Wafer를 선택하세요:",
-    options=df[df["Lot번호"] == selected_lot]["Wafer번호"].unique()
-)
+# 오른쪽 열: 로트 및 웨이퍼 선택
+with col2:
+    st.subheader("로트 및 웨이퍼 선택")
+    selected_lot = st.selectbox("Lot을 선택하세요:", options=df["Lot번호"].unique())
+
+    selected_wafer = st.selectbox(
+        "Wafer를 선택하세요:",
+        options=df[df["Lot번호"] == selected_lot]["Wafer번호"].unique()
+    )
 
 # 컬럼 선택
 st.subheader("분석할 컬럼 선택")
