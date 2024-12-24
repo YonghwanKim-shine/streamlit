@@ -5,7 +5,7 @@ import streamlit as st
 from plotly.colors import make_colorscale
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
-import plotly.express as px
+from streamlit_plotly_events import plotly_events
 
 st.set_page_config(
     page_title="WT Dashboard",
@@ -85,24 +85,41 @@ for i in heatmap_data.values:
     x, y, c = map(int,i)
     matrix[y, x] = c
 
-st.subheader("wafer의 히트맵")
-if not heatmap_data.empty:
-    # Streamlit에 필터링된 데이터 표시
-
-    # Plotly 히트맵 생성
+def create_heatmap(matrix):
     cmap = plt.get_cmap('coolwarm')
     colorscale = make_colorscale([cmap(i) for i in np.linspace(0, 1, 256)])
 
     heatmap_fig = go.Figure(
-        data=go.Heatmap(z=pd.DataFrame(matrix), colorscale='rdylbu_r')
+        data=go.Heatmap(z=matrix, colorscale='rdylbu_r')
     )
-    heatmap_fig.update_layout(xaxis=dict(showticklabels=False),
-                              yaxis=dict(showticklabels=False),
-                              width=600,
-                              height=600,
-                              margin=dict(l=30, r=10, t=10, b=10))
+    heatmap_fig.update_layout(
+        xaxis=dict(showticklabels=False),
+        yaxis=dict(showticklabels=False),
+        width=600,
+        height=600,
+        margin=dict(l=30, r=10, t=10, b=10)
+    )
+    return heatmap_fig
 
-    # Streamlit에 히트맵 출력
-    st.plotly_chart(heatmap_fig)
-else:
-    st.write("조건을 만족하는 데이터가 없습니다.")
+with st.container():
+    col1, col2 = st.columns(2)
+
+    # 왼쪽 컬럼: 히트맵 출력
+    with col1:
+        st.subheader("wafer의 히트맵")
+        if not heatmap_data.empty:
+            heatmap_fig = create_heatmap(pd.DataFrame(matrix))
+            st.plotly_chart(heatmap_fig)
+        else:
+            st.write("조건을 만족하는 데이터가 없습니다.")
+
+    # 오른쪽 컬럼: 클릭 이벤트 출력
+    with col2:
+        st.subheader("클릭 이벤트 결과")
+        if not heatmap_data.empty:
+            # 클릭 이벤트 처리
+            selected_points = plotly_events(heatmap_fig, click_event=True)
+            if selected_points:
+                st.write(f"Clicked data: {selected_points[0]}")
+            else:
+                st.write("No data selected")
