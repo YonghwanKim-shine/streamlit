@@ -11,7 +11,7 @@ st.set_page_config(
 
 st.title("Wafer Test Overview")
 
-# 라인차트
+# 라인차트#
 st.subheader("Weekly Health Chart")
 dates = pd.date_range(start="2020-11-07", end="2020-11-11")
 values = np.random.rand(len(dates))
