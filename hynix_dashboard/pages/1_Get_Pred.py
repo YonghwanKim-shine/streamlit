@@ -1,6 +1,11 @@
 import pandas as pd
+import numpy as np
 import gdown
 import streamlit as st
+from plotly.colors import make_colorscale
+import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+import plotly.express as px
 
 st.set_page_config(
     page_title="WT Dashboard",
@@ -44,7 +49,7 @@ lot_list = df['Lot'].unique()
 
 wafer_list = df['Wafer'].unique()
 wafer_list = sorted(list(map(int, wafer_list)))
-wafer_list = map(str, wafer_list)
+wafer_list = list(map(str, wafer_list))
 
 
 # 앞단
@@ -52,8 +57,47 @@ wafer_list = map(str, wafer_list)
 
 st.title("Get Pred")
 
+st.subheader("wafer를 선택하세요")
 selected_option_lot = st.selectbox('Lot', lot_list)
 selected_option_wafer = st.selectbox('Wafer', wafer_list)
 #st.selectbox('Wafer', wafer_list)
 st.write('Lot', selected_option_lot)
 st.write('Wafer', selected_option_wafer)
+
+#좌표 단위 맞춰주기
+
+df.loc[:, 'DieX'] = df.loc[:, 'DieX'].astype(int)-12
+df.loc[:, 'DieY'] = df.loc[:, 'DieY'].astype(int)-11
+
+condition = (df['Lot'] == selected_option_lot) & (df['Wafer'] == selected_option_wafer)
+
+##수정 예정
+heatmap_data = df[condition].loc[:,['DieX','DieY','X5']]
+
+matrix = np.full((22, 55), np.nan)
+for i in heatmap_data.values:
+    x, y, c = map(int,i)
+    matrix[y, x] = c
+
+st.subheader("wafer의 히트맵")
+if not heatmap_data.empty:
+    # Streamlit에 필터링된 데이터 표시
+    st.write(heatmap_data)
+
+    # Plotly 히트맵 생성
+    cmap = plt.get_cmap('coolwarm')
+    colorscale = make_colorscale([cmap(i) for i in np.linspace(0, 1, 256)])
+
+    heatmap_fig = go.Figure(
+        data=go.Heatmap(z=pd.DataFrame(matrix), colorscale='rdylbu_r')
+    )
+    heatmap_fig.update_layout(xaxis=dict(showticklabels=False),
+                              yaxis=dict(showticklabels=False),
+                              width=600,
+                              height=600,
+                              margin=dict(l=30, r=10, t=10, b=10))
+
+    # Streamlit에 히트맵 출력
+    st.plotly_chart(heatmap_fig)
+else:
+    st.write("조건을 만족하는 데이터가 없습니다.")
