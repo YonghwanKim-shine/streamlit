@@ -56,14 +56,18 @@ wafer_list = list(map(str, wafer_list))
 # 페이지 기본 설정
 
 with st.container():
+    col1, col2 = st.columns(2)
     st.title("Get Pred")
 
-    st.subheader("wafer를 선택하세요")
-    selected_option_lot = st.selectbox('Lot', lot_list)
-    selected_option_wafer = st.selectbox('Wafer', wafer_list)
-    #st.selectbox('Wafer', wafer_list)
-    st.write('Lot', selected_option_lot)
-    st.write('Wafer', selected_option_wafer)
+    with col1:
+        st.subheader("Lot 선택")
+        selected_option_lot = st.selectbox('Lot', lot_list)
+    with col2:
+        st.subheader("Wafer 선택")
+        selected_option_wafer = st.selectbox('Wafer', wafer_list)
+
+st.write('선택된 Lot', selected_option_lot)
+st.write('선택된 Wafer', selected_option_wafer)
 
 # 오른쪽 페이지
 # 좌표 단위 맞춰주기
@@ -81,26 +85,24 @@ for i in heatmap_data.values:
     x, y, c = map(int,i)
     matrix[y, x] = c
 
-with st.container():
-    st.subheader("wafer의 히트맵")
-    col1 = st.columns(1)[0]
-    if not heatmap_data.empty:
-        # Streamlit에 필터링된 데이터 표시
+st.subheader("wafer의 히트맵")
+if not heatmap_data.empty:
+    # Streamlit에 필터링된 데이터 표시
 
-        # Plotly 히트맵 생성
-        cmap = plt.get_cmap('coolwarm')
-        colorscale = make_colorscale([cmap(i) for i in np.linspace(0, 1, 256)])
+    # Plotly 히트맵 생성
+    cmap = plt.get_cmap('coolwarm')
+    colorscale = make_colorscale([cmap(i) for i in np.linspace(0, 1, 256)])
 
-        heatmap_fig = go.Figure(
-            data=go.Heatmap(z=pd.DataFrame(matrix), colorscale='rdylbu_r')
-        )
-        heatmap_fig.update_layout(xaxis=dict(showticklabels=False),
-                                  yaxis=dict(showticklabels=False),
-                                  width=600,
-                                  height=600,
-                                  margin=dict(l=30, r=10, t=10, b=10))
+    heatmap_fig = go.Figure(
+        data=go.Heatmap(z=pd.DataFrame(matrix), colorscale='rdylbu_r')
+    )
+    heatmap_fig.update_layout(xaxis=dict(showticklabels=False),
+                              yaxis=dict(showticklabels=False),
+                              width=600,
+                              height=600,
+                              margin=dict(l=30, r=10, t=10, b=10))
 
-        # Streamlit에 히트맵 출력
-        st.plotly_chart(heatmap_fig)
-    else:
-        st.write("조건을 만족하는 데이터가 없습니다.")
+    # Streamlit에 히트맵 출력
+    st.plotly_chart(heatmap_fig)
+else:
+    st.write("조건을 만족하는 데이터가 없습니다.")
