@@ -60,10 +60,10 @@ with st.container():
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader("Lot 선택")
+        #st.subheader("Lot 선택")
         selected_option_lot = st.selectbox('Lot', lot_list)
     with col2:
-        st.subheader("Wafer 선택")
+        #st.subheader("Wafer 선택")
         selected_option_wafer = st.selectbox('Wafer', wafer_list)
 
 # st.write('선택된 Lot', selected_option_lot)
