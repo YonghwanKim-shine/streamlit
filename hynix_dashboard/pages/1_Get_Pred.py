@@ -66,8 +66,8 @@ with st.container():
         st.subheader("Wafer 선택")
         selected_option_wafer = st.selectbox('Wafer', wafer_list)
 
-st.write('선택된 Lot', selected_option_lot)
-st.write('선택된 Wafer', selected_option_wafer)
+# st.write('선택된 Lot', selected_option_lot)
+# st.write('선택된 Wafer', selected_option_wafer)
 
 # 오른쪽 페이지
 # 좌표 단위 맞춰주기
