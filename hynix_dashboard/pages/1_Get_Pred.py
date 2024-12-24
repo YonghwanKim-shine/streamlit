@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 # Google Drive 공유 링크
-url_position_1 = "https://drive.google.com/uc?id=1ajvBW_OH96xtlJZ9aronGZsbtRJkuswp"
+url_position_1 = "https://drive.google.com/uc?id=14AON6Oam_0Z-u5RhHojFAexrVef1Sg2S"
 # url_position_2 = "https://drive.google.com/uc?id=19YOKChOwa4S6ynO00SKauMPaZtfPuQkC"
 # url_position_3 = "https://drive.google.com/uc?id=1Q0S8UAyvX7cHsOAbhcS026y0EFHmByCK"
 # url_position_4 = "https://drive.google.com/uc?id=18KindmSQqoQuu4iV7ySE9q4cETC10Lf5"
