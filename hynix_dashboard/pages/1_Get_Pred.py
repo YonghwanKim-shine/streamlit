@@ -96,7 +96,7 @@ def create_heatmap(matrix):
         xaxis=dict(showticklabels=False),
         yaxis=dict(showticklabels=False),
         width=500,
-        height=500,
+        height=400,
         margin=dict(l=30, r=10, t=10, b=10)
     )
     return heatmap_fig
