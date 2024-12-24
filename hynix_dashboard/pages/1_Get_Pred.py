@@ -1,6 +1,11 @@
 import pandas as pd
+import numpy as np
 import gdown
 import streamlit as st
+from plotly.colors import make_colorscale
+import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+import plotly.express as px
 
 st.set_page_config(
     page_title="WT Dashboard",
@@ -9,7 +14,7 @@ st.set_page_config(
 )
 
 # Google Drive 공유 링크
-url_position_1 = "https://drive.google.com/uc?id=1ajvBW_OH96xtlJZ9aronGZsbtRJkuswp"
+url_position_1 = "https://drive.google.com/uc?id=14AON6Oam_0Z-u5RhHojFAexrVef1Sg2S"
 # url_position_2 = "https://drive.google.com/uc?id=19YOKChOwa4S6ynO00SKauMPaZtfPuQkC"
 # url_position_3 = "https://drive.google.com/uc?id=1Q0S8UAyvX7cHsOAbhcS026y0EFHmByCK"
 # url_position_4 = "https://drive.google.com/uc?id=18KindmSQqoQuu4iV7ySE9q4cETC10Lf5"
@@ -44,16 +49,60 @@ lot_list = df['Lot'].unique()
 
 wafer_list = df['Wafer'].unique()
 wafer_list = sorted(list(map(int, wafer_list)))
-wafer_list = map(str, wafer_list)
+wafer_list = list(map(str, wafer_list))
 
 
-# 앞단
+# 왼쪽 페이지
 # 페이지 기본 설정
-
 st.title("Get Pred")
 
-selected_option_lot = st.selectbox('Lot', lot_list)
-selected_option_wafer = st.selectbox('Wafer', wafer_list)
-#st.selectbox('Wafer', wafer_list)
-st.write('Lot', selected_option_lot)
-st.write('Wafer', selected_option_wafer)
+with st.container():
+    col1, col2 = st.columns(2)
+
+    with col1:
+        #st.subheader("Lot 선택")
+        selected_option_lot = st.selectbox('Lot', lot_list)
+    with col2:
+        #st.subheader("Wafer 선택")
+        selected_option_wafer = st.selectbox('Wafer', wafer_list)
+
+# st.write('선택된 Lot', selected_option_lot)
+# st.write('선택된 Wafer', selected_option_wafer)
+
+# 오른쪽 페이지
+# 좌표 단위 맞춰주기
+
+df.loc[:, 'DieX'] = df.loc[:, 'DieX'].astype(int)-12
+df.loc[:, 'DieY'] = df.loc[:, 'DieY'].astype(int)-11
+
+condition = (df['Lot'] == selected_option_lot) & (df['Wafer'] == selected_option_wafer)
+
+##수정 예정
+heatmap_data = df[condition].loc[:,['DieX','DieY','X5']]
+
+matrix = np.full((22, 55), np.nan)
+for i in heatmap_data.values:
+    x, y, c = map(int,i)
+    matrix[y, x] = c
+
+st.subheader("wafer의 히트맵")
+if not heatmap_data.empty:
+    # Streamlit에 필터링된 데이터 표시
+
+    # Plotly 히트맵 생성
+    cmap = plt.get_cmap('coolwarm')
+    colorscale = make_colorscale([cmap(i) for i in np.linspace(0, 1, 256)])
+
+    heatmap_fig = go.Figure(
+        data=go.Heatmap(z=pd.DataFrame(matrix), colorscale='rdylbu_r')
+    )
+    heatmap_fig.update_layout(xaxis=dict(showticklabels=False),
+                              yaxis=dict(showticklabels=False),
+                              width=600,
+                              height=600,
+                              margin=dict(l=30, r=10, t=10, b=10))
+
+    # Streamlit에 히트맵 출력
+    st.plotly_chart(heatmap_fig)
+else:
+    st.write("조건을 만족하는 데이터가 없습니다.")
