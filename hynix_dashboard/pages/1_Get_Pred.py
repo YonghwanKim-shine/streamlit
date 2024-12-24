@@ -54,8 +54,8 @@ wafer_list = list(map(str, wafer_list))
 
 # 왼쪽 페이지
 # 페이지 기본 설정
-layout1, layout2 = st.columns(2)
-with layout1:
+
+with st.container():
     st.title("Get Pred")
 
     st.subheader("wafer를 선택하세요")
@@ -81,8 +81,9 @@ for i in heatmap_data.values:
     x, y, c = map(int,i)
     matrix[y, x] = c
 
-with layout2:
+with st.container():
     st.subheader("wafer의 히트맵")
+    col1 = st.columns(1)[0]
     if not heatmap_data.empty:
         # Streamlit에 필터링된 데이터 표시
 
