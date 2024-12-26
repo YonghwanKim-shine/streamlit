@@ -30,7 +30,7 @@ def road_file():
 
     # df = pd.concat([df1,df2,df3,df4], axis=0)
     return df
-
+#
 # 목록 불러오는 기능
 df = road_file()
 df[['Lot', 'Wafer', 'DieX', 'DieY']] = df['run_wf_xy'].str.split('_', expand=True)
