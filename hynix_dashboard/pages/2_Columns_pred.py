@@ -33,6 +33,12 @@ df_data = road_file()
 # 'run_wf_xy'에서 Lot, Wafer, DieX, DieY 분리
 df_data[['Lot', 'Wafer', 'DieX', 'DieY']] = df_data['run_wf_xy'].str.split('_', expand=True)
 
+
+
+lot_wafer_dict = df_data.groupby('Lot')['Wafer'].apply(lambda x: sorted(map(str, map(int, x.unique())))).to_dict()
+
+
+lot_list = lot_wafer_dict.keys()
 # Lot_Wafer 별 X0 평균 계산
 lot_wafer_avg = (
     df_data.groupby(['Lot', 'Wafer'])['X0']
@@ -40,7 +46,19 @@ lot_wafer_avg = (
     .reset_index()
     .rename(columns={'X0': 'X0 평균'}).sort_values(by='X0 평균', ascending=False)
 )
-
+data = []
+for lot in lot_list:
+    wafer_count = lot_wafer_dict[lot]
+    for wafer in wafer_count:
+        data.append({
+            "Lot번호": lot,
+            "Wafer번호": f"W{wafer}",
+            "컬럼1": np.round(np.random.rand() * 100, 2),
+            "컬럼2": np.round(np.random.rand() * 100, 2),
+            "컬럼3": np.round(np.random.rand() * 100, 2),
+        })
+#
+df = pd.DataFrame(data)
 # Streamlit UI 구성
 col1, col2 = st.columns([1, 2])
 
