@@ -44,7 +44,7 @@ lot_list = lot_wafer_dict.keys()
 
 for lot in lot_list:
     wafer_count = lot_wafer_dict[lot]
-    for wafer in wafer_count
+    for wafer in wafer_count:
         data.append({
             "Lot번호": lot,
             "Wafer번호": f"W{wafer}",
