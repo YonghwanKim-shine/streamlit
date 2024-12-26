@@ -16,8 +16,7 @@ st.set_page_config(
 )
 
 # Google Drive 공유 링크
-url = "https://drive.google.com/drive/folders/1cOESXZMDkVAMAkkQ6bQojxtKxSMZoYB-"
-
+url = "https://drive.google.com/uc?id=18ls7kxYzQu1HXFH-IozgUcJ24LU6zBlR"
 
 
 def download_file(url, output_path):
