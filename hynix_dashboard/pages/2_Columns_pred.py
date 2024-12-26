@@ -38,7 +38,7 @@ lot_wafer_avg = (
     df_data.groupby(['Lot', 'Wafer'])['X0']
     .mean()
     .reset_index()
-    .rename(columns={'X0': 'X0 평균'})
+    .rename(columns={'X0': 'X0 평균'}).sort_values(by='X0 평균', ascending=False)
 )
 
 # Streamlit UI 구성
@@ -51,16 +51,34 @@ with col1:
 
 # 오른쪽 열: 로트 및 웨이퍼 선택 + 분석 결과
 with col2:
+    # 로트 및 웨이퍼 선택
     st.subheader("로트 및 웨이퍼 선택")
-    selected_lot = st.selectbox("Lot을 선택하세요:", options=lot_wafer_avg["Lot"].unique())
+    selected_lot = st.selectbox("Lot을 선택하세요:", options=df["Lot번호"].unique())
 
     selected_wafer = st.selectbox(
         "Wafer를 선택하세요:",
-        options=lot_wafer_avg[lot_wafer_avg["Lot"] == selected_lot]["Wafer"].unique()
+        options=df[df["Lot번호"] == selected_lot]["Wafer번호"].unique()
     )
 
-    st.subheader(f"{selected_lot}-{selected_wafer} X0 평균값")
-    selected_avg = lot_wafer_avg[
-        (lot_wafer_avg["Lot"] == selected_lot) & (lot_wafer_avg["Wafer"] == selected_wafer)
-    ]["X0 평균"]
-    st.write(f"X0 평균값: {selected_avg.values[0]:.2f}")
+    # 컬럼 선택
+    st.subheader("분석할 컬럼 선택")
+    columns_to_analyze = st.multiselect(
+        "분석할 컬럼을 선택하세요:",
+        options=["컬럼1", "컬럼2", "컬럼3"],
+        default=["컬럼1", "컬럼2"]
+    )
+
+    if columns_to_analyze:
+        # 전체 데이터 기반 평균값
+        overall_avg = df[columns_to_analyze].mean().to_frame(name="전체 평균")
+
+        # 선택한 Lot, Wafer 데이터 기반 평균값
+        selected_data = df[(df["Lot번호"] == selected_lot) & (df["Wafer번호"] == selected_wafer)]
+        wafer_avg = selected_data[columns_to_analyze].mean().to_frame(name=f"{selected_lot}-{selected_wafer} 평균")
+
+        # 분석 결과 출력
+        st.write("### 전체 데이터 기반 평균값")
+        st.dataframe(overall_avg)
+
+        st.write(f"### {selected_lot}-{selected_wafer} 데이터 기반 평균값")
+        st.dataframe(wafer_avg)
