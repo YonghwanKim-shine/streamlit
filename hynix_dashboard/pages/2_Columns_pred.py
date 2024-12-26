@@ -28,10 +28,9 @@ def download_file(url, output_path):
 @st.cache_data
 def road_file():
     file_path = download_file(url, "temp_data_40000.csv")
-    df = pd.read_csv(file_path)
+    df_data = pd.read_csv(file_path)
 
-    # df = pd.concat([df1,df2,df3,df4], axis=0)
-    return df
+    return df_data
 #
 # 목록 불러오는 기능
 df_data = road_file()
@@ -61,7 +60,7 @@ col1, col2 = st.columns([1, 2])  # 왼쪽이 더 넓은 비율로 설정
 # 왼쪽 열: 전체 데이터 미리보기
 with col1:
     st.subheader("Wafer별 Health값")
-    st.dataframe(df_data["ufs_serial","X0"], height=600)
+    st.dataframe(df_data[["ufs_serial","X0"]], height=600)
 #
 # 오른쪽 열: 로트 및 웨이퍼 선택 + 분석 결과
 with col2:
