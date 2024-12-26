@@ -1,27 +1,48 @@
-import streamlit as st
+
+
 import pandas as pd
 import numpy as np
+import gdown
+import streamlit as st
+from plotly.colors import make_colorscale
+import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+from streamlit_plotly_events import plotly_events
 
-# 페이지 기본 설정
 st.set_page_config(
     page_title="WT Dashboard",
     page_icon="🍔",
     layout="wide"
 )
 
-st.title("Wafer Health Anal")
+# Google Drive 공유 링크
+url = "https://drive.google.com/drive/folders/1cOESXZMDkVAMAkkQ6bQojxtKxSMZoYB-"
 
 
 
+def download_file(url, output_path):
+    gdown.download(url, output_path, quiet=False)
+    return output_path
+
+@st.cache_data
+def road_file():
+    file_path = download_file(url, "temp_data_40000.csv")
+    df = pd.read_csv(file_path)
+
+    # df = pd.concat([df1,df2,df3,df4], axis=0)
+    return df
+
+# 목록 불러오는 기능
+df = road_file()
+df[['Lot', 'Wafer', 'DieX', 'DieY']] = df['run_wf_xy'].str.split('_', expand=True)
+# Lot별로 각 Wafer 리스트 생성
+lot_wafer_dict = df.groupby('Lot')['Wafer'].apply(lambda x: sorted(map(str, map(int, x.unique())))).to_dict()
 
 
-# 임시 데이터 생성
-np.random.seed(42)  # 재현성을 위해 시드 설정
-lot_numbers = [f"Lot{i}" for i in range(1, 11)]  # Lot 번호
-data = []
+lot_list = lot_wafer_dict.keys()
 
-for lot in lot_numbers:
-    wafer_count = np.random.randint(5, 15)  # 각 Lot의 웨이퍼 개수 랜덤 생성
+for lot in lot_list:
+    wafer_count = lot_wafer_dict[lot]
     for wafer in range(1, wafer_count + 1):
         data.append({
             "Lot번호": lot,
@@ -31,16 +52,13 @@ for lot in lot_numbers:
             "컬럼3": np.round(np.random.rand() * 100, 2),
         })
 
-# 데이터프레임 생성
-df = pd.DataFrame(data)
-
 # 가로 열 배치
 col1, col2 = st.columns([1, 2])  # 왼쪽이 더 넓은 비율로 설정
 
 # 왼쪽 열: 전체 데이터 미리보기
 with col1:
-    st.subheader("전체 데이터 미리보기")
-    st.dataframe(df, height=600)
+    st.subheader("Wafer별 Health값")
+    st.dataframe(df["ufs_serial","X0"], height=600)
 
 # 오른쪽 열: 로트 및 웨이퍼 선택 + 분석 결과
 with col2:
