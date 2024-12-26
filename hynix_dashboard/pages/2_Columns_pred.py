@@ -9,6 +9,7 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from streamlit_plotly_events import plotly_events
 
+from hynix_dashboard.Overview import wafer_count
 
 st.set_page_config(
     page_title="WT Dashboard",
@@ -33,14 +34,14 @@ def road_file():
     return df
 #
 # 목록 불러오는 기능
-df = road_file()
-df[['Lot', 'Wafer', 'DieX', 'DieY']] = df['run_wf_xy'].str.split('_', expand=True)
+df_data = road_file()
+df_data[['Lot', 'Wafer', 'DieX', 'DieY']] = df_data['run_wf_xy'].str.split('_', expand=True)
 # Lot별로 각 Wafer 리스트 생성
-lot_wafer_dict = df.groupby('Lot')['Wafer'].apply(lambda x: sorted(map(str, map(int, x.unique())))).to_dict()
+lot_wafer_dict = df_data.groupby('Lot')['Wafer'].apply(lambda x: sorted(map(str, map(int, x.unique())))).to_dict()
 
 
 lot_list = lot_wafer_dict.keys()
-
+data = []
 for lot in lot_list:
     wafer_count = lot_wafer_dict[lot]
     for wafer in wafer_count:
@@ -52,6 +53,8 @@ for lot in lot_list:
             "컬럼3": np.round(np.random.rand() * 100, 2),
         })
 #
+df = pd.DataFrame(data)
+
 # 가로 열 배치
 col1, col2 = st.columns([1, 2])  # 왼쪽이 더 넓은 비율로 설정
 
