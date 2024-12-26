@@ -9,6 +9,8 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from streamlit_plotly_events import plotly_events
 
+from hynix_dashboard.Overview import wafer_count
+
 st.set_page_config(
     page_title="WT Dashboard",
     page_icon="🍔",
@@ -42,7 +44,7 @@ lot_list = lot_wafer_dict.keys()
 
 for lot in lot_list:
     wafer_count = lot_wafer_dict[lot]
-    for wafer in range(1, wafer_count + 1):
+    for wafer in wafer_count
         data.append({
             "Lot번호": lot,
             "Wafer번호": f"W{wafer}",
