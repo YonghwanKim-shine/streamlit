@@ -51,7 +51,7 @@ for lot in lot_list:
             "컬럼2": np.round(np.random.rand() * 100, 2),
             "컬럼3": np.round(np.random.rand() * 100, 2),
         })
-
+#
 # 가로 열 배치
 col1, col2 = st.columns([1, 2])  # 왼쪽이 더 넓은 비율로 설정
 
