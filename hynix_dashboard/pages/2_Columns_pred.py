@@ -58,7 +58,7 @@ col1, col2 = st.columns([1, 2])  # 왼쪽이 더 넓은 비율로 설정
 with col1:
     st.subheader("Wafer별 Health값")
     st.dataframe(df["ufs_serial","X0"], height=600)
-
+#
 # 오른쪽 열: 로트 및 웨이퍼 선택 + 분석 결과
 with col2:
     # 로트 및 웨이퍼 선택
