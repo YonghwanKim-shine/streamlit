@@ -82,8 +82,8 @@ with col2:
     st.subheader("분석할 컬럼 선택")
     columns_to_analyze = st.multiselect(
         "분석할 컬럼을 선택하세요:",
-        options=["컬럼1", "컬럼2", "컬럼3"],
-        default=["컬럼1", "컬럼2"]
+        options=df_data.columns,
+        default=[]
     )
 
     if columns_to_analyze:
