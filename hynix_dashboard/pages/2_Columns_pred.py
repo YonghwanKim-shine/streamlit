@@ -9,7 +9,6 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from streamlit_plotly_events import plotly_events
 
-from hynix_dashboard.Overview import wafer_count
 
 st.set_page_config(
     page_title="WT Dashboard",
