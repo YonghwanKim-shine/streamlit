@@ -75,7 +75,7 @@ with col2:
 
     selected_wafer = st.selectbox(
         "Wafer를 선택하세요:",
-        options=df[df["Lot번호"] == selected_lot]["Wafer번호"].unique().sort_values(by='Wafer번호"', ascending=False)
+        options=df[df["Lot번호"] == selected_lot]["Wafer번호"].sort_values(ascending=False).unique()
     )
 
     # 컬럼 선택
