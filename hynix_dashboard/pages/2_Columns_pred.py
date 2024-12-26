@@ -88,10 +88,10 @@ with col2:
 
     if columns_to_analyze:
         # 전체 데이터 기반 평균값
-        overall_avg = df[columns_to_analyze].mean().to_frame(name="전체 평균")
+        overall_avg = df_data[columns_to_analyze].mean().to_frame(name="전체 평균")
 
         # 선택한 Lot, Wafer 데이터 기반 평균값
-        selected_data = df[(df["Lot번호"] == selected_lot) & (df["Wafer번호"] == selected_wafer)]
+        selected_data = df_data[(df_data["Lot번호"] == selected_lot) & (df_data["Wafer번호"] == selected_wafer)]
         wafer_avg = selected_data[columns_to_analyze].mean().to_frame(name=f"{selected_lot}-{selected_wafer} 평균")
 
         # 분석 결과 출력
