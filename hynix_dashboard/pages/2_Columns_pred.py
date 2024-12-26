@@ -14,7 +14,7 @@ st.set_page_config(
     page_icon="🍔",
     layout="wide"
 )
-
+#
 # Google Drive 공유 링크
 url = "https://drive.google.com/uc?id=18ls7kxYzQu1HXFH-IozgUcJ24LU6zBlR"
 
