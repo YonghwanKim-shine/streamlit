@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from streamlit_lightweight_charts import renderLightweightCharts
+from scipy.interpolate import make_interp_spline
 
 # 페이지 기본 설정
 st.set_page_config(
@@ -22,15 +23,17 @@ dummy_df = pd.DataFrame({
     "Value": values
 })
 
+# 곡선 형태 데이터 생성 (보간법 적용)
+x = np.arange(len(dummy_df["Date"]))  # 정수형 x값
+y = dummy_df["Value"]  # y값
+spl = make_interp_spline(x, y, k=3)  # Cubic Spline 보간
+x_new = np.linspace(x.min(), x.max(), 300)  # 세밀한 x축
+y_new = spl(x_new)  # 곡선의 y값
+
+
 # 데이터 포맷 변환 (streamlit-lightweight-charts의 데이터 형식에 맞게 변환)
 price_volume_area_data = [
     {"time": date.strftime("%Y-%m-%d"), "value": value}
-    for date, value in zip(dummy_df["Date"], dummy_df["Value"])
-]
-
-# 히스토그램 데이터로 사용 (단순화)
-price_volume_histogram_data = [
-    {"time": date.strftime("%Y-%m-%d"), "value": value * 1000}  # 임의로 스케일 조정
     for date, value in zip(dummy_df["Date"], dummy_df["Value"])
 ]
 
