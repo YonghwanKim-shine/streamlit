@@ -4,3 +4,4 @@ gdown
 plotly
 scipy
 streamlit-plotly-events
+streamlit-lightweight-charts
