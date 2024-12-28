@@ -12,7 +12,6 @@ st.set_page_config(
 
 st.title("📈Overview")
 
-
 st.subheader("Trend")
 
 ## 실제 데이터로 변경해야함
@@ -34,24 +33,33 @@ colors = [
 
 fig = go.Figure()
 
+for i in range(len(colors)):
+    fig.add_trace(go.Scatter(
+        x=dummy_df["Date"],
+        y=dummy_df["Value"] * (1 - 0.1 * i),  # 점점 낮아지는 곡선
+        mode='lines',
+        line=dict(width=0),  # 라인 숨김
+        fill='tonexty',
+        fillcolor=colors[i],
+        name=f"Layer {i+1}"
+    ))
+
+# 메인 라인 추가
 fig.add_trace(go.Scatter(
     x=dummy_df["Date"],
     y=dummy_df["Value"],
-    mode='lines',            # 라인 모드
-    name='Value',
-    fill='tozeroy',          # 아래로 채움
-    fillcolor='rgba(135, 206, 250, 0.5)',  # 색상 및 투명도 설정
-    line=dict(color='orange')  # 라인 색상 설정
+    mode='lines',
+    line=dict(color="orange", width=2),  # 메인 라인 색상
+    name="Main Line"
 ))
 
-# 그래프 레이아웃 설정
+# 레이아웃 설정
 fig.update_layout(
-    title="Line Chart with Filled Area",
+    #title="Line Chart with Orange Gradient Fill",
     xaxis_title="Date",
-    yaxis_title="Value",
+    yaxis_title="Health",
     template="plotly_white"
 )
 
-# Streamlit 앱에 그래프 표시
-st.title("Streamlit Line Chart with Filled Area")
+# Streamlit에 그래프 표시
 st.plotly_chart(fig)
