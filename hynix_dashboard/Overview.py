@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+from matplotlib.colors import to_rgba
+from scipy.interpolate import make_interp_spline
 
 # 페이지 기본 설정
 st.set_page_config(
@@ -22,44 +24,51 @@ dummy_df = pd.DataFrame({
     "Value": values
 })
 
-# 주황색 그라데이션 설정
-colors = [
-    "rgba(255, 165, 0, 0.9)",  # 거의 투명한 주황색
-    "rgba(255, 165, 0, 0.7)",  # 조금 더 진한 주황색
-    "rgba(255, 165, 0, 0.5)",  # 중간 투명 주황색
-    "rgba(255, 165, 0, 0.3)",  # 덜 투명한 주황색
-    "rgba(255, 165, 0, 0.1)"   # 거의 불투명한 주황색
-]
+# 데이터 생성
+dates = pd.date_range(start="2020-11-07", end="2020-11-11")
+values = np.random.rand(len(dates))
 
-fig = go.Figure()
+dummy_df = pd.DataFrame({
+    "Date": dates,
+    "Value": values
+})
 
-for i in range(len(colors)):
-    fig.add_trace(go.Scatter(
-        x=dummy_df["Date"],
-        y=dummy_df["Value"] * (1 - 0.1 * i),  # 점점 낮아지는 곡선
-        mode='lines',
-        line=dict(width=0),  # 라인 숨김
-        fill='tonexty',
-        fillcolor=colors[i],
-        name=f"Layer {i+1}"
-    ))
 
-# 메인 라인 추가
-fig.add_trace(go.Scatter(
-    x=dummy_df["Date"],
-    y=dummy_df["Value"],
-    mode='lines',
-    line=dict(color="orange", width=2),  # 메인 라인 색상
-    name="Main Line"
-))
+x = np.arange(len(dummy_df["Date"]))  # 정수형 x값
+y = dummy_df["Value"]  # y값
+spl = make_interp_spline(x, y, k=3)  # 곡선을 생성 (k=3: Cubic Spline)
+x_new = np.linspace(x.min(), x.max(), 300)  # 곡선을 위한 세밀한 x축
+y_new = spl(x_new)  # 곡선의 y값
 
-# 레이아웃 설정
-fig.update_layout(
-    #title="Line Chart with Orange Gradient Fill",
-    xaxis_title="Date",
-    yaxis_title="Health",
-    template="plotly_white"
-)
+# Matplotlib 그래프 생성
+fig, ax = plt.subplots(figsize=(10, 6))
 
-# Streamlit에 그래프 표시
-st.plotly_chart(fig)
+# 그라데이션 색상 정의
+color_start = to_rgba("orange", 0.1)  # 밝은 주황색
+color_end = to_rgba("orange", 0.9)    # 진한 주황색
+
+# 그라데이션을 위한 색상 생성
+for i, alpha in enumerate(np.linspace(0.1, 0.9, 100)):
+    ax.fill_between(
+        x_new,
+        y_new,
+        where=(y_new > 0),
+        interpolate=True,
+        color=to_rgba("orange", alpha),
+        zorder=i
+    )
+
+# 곡선 형태의 라인 추가
+ax.plot(x_new, y_new, color="orange", linewidth=2, label="Value")
+
+# x축 레이블 설정
+ax.set_xticks(np.arange(len(dummy_df["Date"])))
+ax.set_xticklabels(dummy_df["Date"].dt.strftime("%Y-%m-%d"), rotation=45)
+
+# 그래프 제목과 축 레이블 설정
+#ax.set_title("Line Chart with Gradient Fill (Rounded Line)", fontsize=16)
+ax.set_xlabel("Date", fontsize=12)
+ax.set_ylabel("Health", fontsize=12)
+
+# Streamlit에 표시
+st.pyplot(fig)

@@ -2,5 +2,5 @@ pandas
 numpy
 gdown
 plotly
-matplotlib
+scipy
 streamlit-plotly-events
