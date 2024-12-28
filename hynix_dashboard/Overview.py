@@ -37,6 +37,15 @@ ChartOptions = {
             "color": 'white'
         },
         "textColor": 'black',
+    },
+    "timeScale": {
+        "timeVisible": True,  # 시간 보이도록 설정
+        "secondsVisible": False,  # 초 단위 비활성화
+        "borderColor": 'rgba(42, 46, 57, 0.1)'  # 경계선 색상
+    },
+    "grid": {
+        "vertLines": {"color": 'rgba(42, 46, 57, 0.1)'},
+        "horzLines": {"color": 'rgba(42, 46, 57, 0.1)'}
     }
 }
 
