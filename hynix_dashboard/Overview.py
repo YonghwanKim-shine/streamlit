@@ -60,8 +60,7 @@ priceVolumeSeries = [
 ]
 
 # Streamlit 앱 렌더링
-st.title("Streamlit Lightweight Charts Example")
-st.subheader("Price and Volume Series Chart (Orange Theme)")
+st.subheader("Weekly Health Trend")
 
 renderLightweightCharts([
     {
