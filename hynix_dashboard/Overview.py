@@ -22,14 +22,6 @@ dummy_df = pd.DataFrame({
     "Value": values
 })
 
-# 데이터 프레임 생성
-dates = pd.date_range(start="2020-11-07", end="2020-11-11")
-values = np.random.rand(len(dates))
-dummy_df = pd.DataFrame({
-    "Date": dates,
-    "Value": values
-})
-
 # 데이터 포맷 변환 (streamlit-lightweight-charts의 데이터 형식에 맞게 변환)
 price_volume_area_data = [
     {"time": date.strftime("%Y-%m-%d"), "value": value}
@@ -43,35 +35,13 @@ price_volume_histogram_data = [
 ]
 
 # 차트 옵션
-priceVolumeChartOptions = {
-    "height": 400,
-    "rightPriceScale": {
-        "scaleMargins": {
-            "top": 0.2,
-            "bottom": 0.25,
-        },
-        "borderVisible": False,
-    },
-    "overlayPriceScales": {
-        "scaleMargins": {
-            "top": 0.7,
-            "bottom": 0,
-        }
-    },
+ChartOptions = {
     "layout": {
         "background": {
             "type": 'solid',
-            "color": '#131722'
+            "color": 'white'
         },
-        "textColor": '#d1d4dc',
-    },
-    "grid": {
-        "vertLines": {
-            "color": 'rgba(42, 46, 57, 0)',
-        },
-        "horzLines": {
-            "color": 'rgba(42, 46, 57, 0.6)',
-        }
+        "textColor": 'black',
     }
 }
 
@@ -86,23 +56,6 @@ priceVolumeSeries = [
             "lineColor": 'rgba(255, 165, 0, 1)',  # 진한 주황색
             "lineWidth": 2,
         }
-    },
-    {
-        "type": 'Histogram',
-        "data": price_volume_histogram_data,  # 데이터 적용
-        "options": {
-            "color": '#FFA500',  # 주황색 히스토그램
-            "priceFormat": {
-                "type": 'volume',
-            },
-            "priceScaleId": ""  # set as an overlay setting
-        },
-        "priceScale": {
-            "scaleMargins": {
-                "top": 0.7,
-                "bottom": 0,
-            }
-        }
     }
 ]
 
@@ -112,7 +65,7 @@ st.subheader("Price and Volume Series Chart (Orange Theme)")
 
 renderLightweightCharts([
     {
-        "chart": priceVolumeChartOptions,
+        "chart": ChartOptions,
         "series": priceVolumeSeries
     }
 ], 'priceAndVolume')
