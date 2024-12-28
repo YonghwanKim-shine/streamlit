@@ -64,15 +64,19 @@ priceVolumeSeries = [
 ]
 
 # Streamlit 앱 렌더링
-st.subheader("Weekly Health Trend")
+with st.container():
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("Weekly Health Trend")
 
-renderLightweightCharts([
-    {
-        "chart": ChartOptions,
-        "series": priceVolumeSeries
-    }
-], 'priceAndVolume')
-
+        renderLightweightCharts([
+            {
+                "chart": ChartOptions,
+                "series": priceVolumeSeries
+            }
+        ], 'priceAndVolume')
+    with col2:
+        st.subheader("Yield")
 
 # # 주황색 그라데이션 설정
 # colors = [
