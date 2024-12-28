@@ -30,11 +30,10 @@ spl = make_interp_spline(x, y, k=3)  # Cubic Spline 보간
 x_new = np.linspace(x.min(), x.max(), 300)  # 세밀한 x축
 y_new = spl(x_new)  # 곡선의 y값
 
-
-# 데이터 포맷 변환 (streamlit-lightweight-charts의 데이터 형식에 맞게 변환)
+# Streamlit Lightweight Charts의 데이터 형식으로 변환
 price_volume_area_data = [
-    {"time": date.strftime("%Y-%m-%d"), "value": value}
-    for date, value in zip(dummy_df["Date"], dummy_df["Value"])
+    {"time": dummy_df["Date"].iloc[int(idx)].strftime("%Y-%m-%d"), "value": val}
+    for idx, val in zip(np.linspace(0, len(dummy_df) - 1, len(x_new)), y_new)
 ]
 
 # 차트 옵션
