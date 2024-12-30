@@ -89,6 +89,8 @@ with col2:
     if columns_to_analyze:
         # 전체 데이터 기반 평균값
         overall_avg = df_data[columns_to_analyze].mean().to_frame(name="전체 평균")
+        df_data["Lot"] = df_data["Lot"].astype(str)
+        df_data["Wafer"] = df_data["Wafer"].astype(str)
 
         # 선택한 Lot, Wafer 데이터 기반 평균값
         selected_data = df_data[(df_data["Lot"] == selected_lot) & (df_data["Wafer"] == selected_wafer)]
