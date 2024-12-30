@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from streamlit_lightweight_charts import renderLightweightCharts
+from scipy.interpolate import make_interp_spline
 
 # 페이지 기본 설정
 st.set_page_config(
@@ -9,12 +11,9 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Wafer Test Overview")
+st.title("📈Overview")
 
-
-
-
-
+st.subheader("Trend")
 
 ## 실제 데이터로 변경해야함
 dates = pd.date_range(start="2020-11-07", end="2020-11-11")
@@ -23,68 +22,100 @@ dummy_df = pd.DataFrame({
     "Date": dates,
     "Value": values
 })
-# 라인 차트 표시
-st.line_chart(data=dummy_df.set_index("Date"))
 
+# 데이터 포맷 변환 (streamlit-lightweight-charts의 데이터 형식에 맞게 변환)
+price_volume_area_data = [
+    {"time": date.strftime("%Y-%m-%d"), "value": value}
+    for date, value in zip(dummy_df["Date"], dummy_df["Value"])
+]
 
+# 차트 옵션
+ChartOptions = {
+    "layout": {
+        "background": {
+            "type": 'solid',
+            "color": 'white'
+        },
+        "textColor": 'black',
+    },
+    "timeScale": {
+        "timeVisible": True,  # 시간 보이도록 설정
+        "secondsVisible": False,  # 초 단위 비활성화
+        "borderColor": 'rgba(42, 46, 57, 0.1)'  # 경계선 색상
+    },
+    "grid": {
+        "vertLines": {"color": 'rgba(42, 46, 57, 0.1)'},
+        "horzLines": {"color": 'rgba(42, 46, 57, 0.1)'}
+    }
+}
 
-# 임시 데이터 생성
-np.random.seed(42)  # 재현성을 위해 시드 설정
-lot_numbers = [f"Lot{i}" for i in range(1, 11)]  # Lot 번호
-data = []
+# 데이터 시리즈 설정
+priceVolumeSeries = [
+    {
+        "type": 'Area',
+        "data": price_volume_area_data,  # 데이터 적용
+        "options": {
+            "topColor": 'rgba(255, 165, 0, 0.56)',  # 밝은 주황색
+            "bottomColor": 'rgba(255, 165, 0, 0.04)',  # 투명한 주황색
+            "lineColor": 'rgba(255, 165, 0, 1)',  # 진한 주황색
+            "lineWidth": 2,
+        }
+    }
+]
 
-for lot in lot_numbers:
-    wafer_count = np.random.randint(5, 15)  # 각 Lot의 웨이퍼 개수 랜덤 생성
-    for wafer in range(1, wafer_count + 1):
-        data.append({
-            "Lot번호": lot,
-            "Wafer번호": f"W{wafer}",
-            "컬럼1": np.round(np.random.rand() * 100, 2),
-            "컬럼2": np.round(np.random.rand() * 100, 2),
-            "컬럼3": np.round(np.random.rand() * 100, 2),
-        })
+# Streamlit 앱 렌더링
+with st.container():
+    col1, col2 = st.columns(2)
+    with col1:
+        st.subheader("Weekly Health Trend")
 
-# 데이터프레임 생성
-df = pd.DataFrame(data)
+        renderLightweightCharts([
+            {
+                "chart": ChartOptions,
+                "series": priceVolumeSeries
+            }
+        ], 'priceAndVolume')
+    with col2:
+        st.subheader("Yield")
 
-# 가로 열 배치
-col1, col2 = st.columns([2, 1])  # 왼쪽이 더 넓은 비율로 설정
-
-# 왼쪽 열: 전체 데이터 미리보기
-with col1:
-    st.subheader("전체 데이터 미리보기")
-    st.dataframe(df, height=600)
-
-# 오른쪽 열: 로트 및 웨이퍼 선택 + 분석 결과
-with col2:
-    # 로트 및 웨이퍼 선택
-    st.subheader("로트 및 웨이퍼 선택")
-    selected_lot = st.selectbox("Lot을 선택하세요:", options=df["Lot번호"].unique())
-
-    selected_wafer = st.selectbox(
-        "Wafer를 선택하세요:",
-        options=df[df["Lot번호"] == selected_lot]["Wafer번호"].unique()
-    )
-
-    # 컬럼 선택
-    st.subheader("분석할 컬럼 선택")
-    columns_to_analyze = st.multiselect(
-        "분석할 컬럼을 선택하세요:",
-        options=["컬럼1", "컬럼2", "컬럼3"],
-        default=["컬럼1", "컬럼2"]
-    )
-
-    if columns_to_analyze:
-        # 전체 데이터 기반 평균값
-        overall_avg = df[columns_to_analyze].mean().to_frame(name="전체 평균")
-
-        # 선택한 Lot, Wafer 데이터 기반 평균값
-        selected_data = df[(df["Lot번호"] == selected_lot) & (df["Wafer번호"] == selected_wafer)]
-        wafer_avg = selected_data[columns_to_analyze].mean().to_frame(name=f"{selected_lot}-{selected_wafer} 평균")
-
-        # 분석 결과 출력
-        st.write("### 전체 데이터 기반 평균값")
-        st.dataframe(overall_avg)
-
-        st.write(f"### {selected_lot}-{selected_wafer} 데이터 기반 평균값")
-        st.dataframe(wafer_avg)
+# # 주황색 그라데이션 설정
+# colors = [
+#     "rgba(255, 165, 0, 0.9)",  # 거의 투명한 주황색
+#     "rgba(255, 165, 0, 0.7)",  # 조금 더 진한 주황색
+#     "rgba(255, 165, 0, 0.5)",  # 중간 투명 주황색
+#     "rgba(255, 165, 0, 0.3)",  # 덜 투명한 주황색
+#     "rgba(255, 165, 0, 0.1)"   # 거의 불투명한 주황색
+# ]
+#
+# fig = go.Figure()
+#
+# for i in range(len(colors)):
+#     fig.add_trace(go.Scatter(
+#         x=dummy_df["Date"],
+#         y=dummy_df["Value"] * (1 - 0.1 * i),  # 점점 낮아지는 곡선
+#         mode='lines',
+#         line=dict(width=0),  # 라인 숨김
+#         fill='tonexty',
+#         fillcolor=colors[i],
+#         name=f"Layer {i+1}"
+#     ))
+#
+# # 메인 라인 추가
+# fig.add_trace(go.Scatter(
+#     x=dummy_df["Date"],
+#     y=dummy_df["Value"],
+#     mode='lines',
+#     line=dict(color="orange", width=2),  # 메인 라인 색상
+#     name="Main Line"
+# ))
+#
+# # 레이아웃 설정
+# fig.update_layout(
+#     #title="Line Chart with Orange Gradient Fill",
+#     xaxis_title="Date",
+#     yaxis_title="Health",
+#     template="plotly_white"
+# )
+#
+# # Streamlit에 그래프 표시
+# st.plotly_chart(fig)
