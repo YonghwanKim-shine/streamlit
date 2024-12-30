@@ -95,7 +95,7 @@ with col2:
         st.write("Wafer 조건 필터 결과:")
         st.dataframe(df_data[df_data["Wafer"] == selected_wafer])
         # 선택한 Lot, Wafer 데이터 기반 평균값
-        selected_data = df_data[(df_data["Lot"] == selected_lot) & (df_data["Wafer"] == selected_wafer)]
+        selected_data = df_data[(df_data["Lot"] == selected_lot) & (df_data["Wafer"] == selected_wafer[1:])]
         wafer_avg = selected_data[columns_to_analyze].mean().to_frame(name=f"{selected_lot}-{selected_wafer} 평균")
         print(selected_lot)
         print(selected_wafer)
