@@ -72,7 +72,7 @@ with col2:
 
     selected_wafer = st.selectbox(
         "Wafer를 선택하세요:",
-        options=df[df["Lot번호"] == selected_lot]["Wafer번호"].astype(int).sort_values(ascending=True).unique()
+        options=df[df["Lot번호"] == selected_lot]["Wafer번호"].sort_values(ascending=True).unique()
     )
 
     # 컬럼 선택
@@ -88,7 +88,7 @@ with col2:
         overall_avg = df_data[columns_to_analyze].mean().to_frame(name="전체 평균")
 
         # 선택한 Lot, Wafer 데이터 기반 평균값
-        selected_data = df_data[(df_data["Lot"] == selected_lot) & (df_data["Wafer"] == selected_wafer.astype(int))]
+        selected_data = df_data[(df_data["Lot"] == selected_lot) & (df_data["Wafer"] == selected_wafer)]
         wafer_avg = selected_data[columns_to_analyze].mean().to_frame(name=f"{selected_lot}-{selected_wafer} 평균")
 
         # 분석 결과 출력
