@@ -86,16 +86,11 @@ with col2:
     if columns_to_analyze:
         # 전체 데이터 기반 평균값
         overall_avg = df_data[columns_to_analyze].mean().to_frame(name="전체 평균")
-        st.write("Lot 조건 필터 결과:")
-        st.dataframe(df_data[df_data["Lot"] == selected_lot])
 
-        st.write("Wafer 조건 필터 결과:")
-        st.dataframe(df_data[df_data["Wafer"] == selected_wafer])
         # 선택한 Lot, Wafer 데이터 기반 평균값
         selected_data = df_data[(df_data["Lot"] == selected_lot) & (df_data["Wafer"] == selected_wafer)]
         wafer_avg = selected_data[columns_to_analyze].mean().to_frame(name=f"{selected_lot}-{selected_wafer} 평균")
-        print(selected_lot)
-        print(selected_wafer)
+
         # 분석 결과 출력
         st.write("### 전체 데이터 기반 평균값")
         st.dataframe(overall_avg)
