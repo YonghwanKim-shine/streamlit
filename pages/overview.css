@@ -1,0 +1,200 @@
+/* paperlogy font 불러오기*/
+@font-face {
+    font-family: 'Paperlogy-6SemiBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-6SemiBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Paperlogy-7Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-7Bold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Paperlogy-8ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+}
+
+/* 모든 요소에 Web Font,webpage scaling 적용 base*/
+* {
+    font-family: 'Paperlogy-6SemiBold', sans-serif !important;
+}
+
+
+/* 배경 색 설정 */
+.st-emotion-cache-1r4qj8v{
+    background: #E6E9EE;
+}
+
+/* header 색 설정 */
+header[tabindex="-1"] {
+    background: #E6E9EE;
+}
+
+
+/* metric 서식 설정 */
+div[data-testid="stMetric"] {
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    text-align: center;
+    border: 1px solid #FFFFFF;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    outline: 5px solid #FFFFFF;
+}
+
+/* Overhead 글씨 수정*/
+h1[id="3c41b60a"]{
+font-family: 'Paperlogy-8ExtraBold', sans-serif !important;
+font-size: 50px;
+padding-bottom: 3rem;
+}
+
+/* trend 글씨 수정 */
+h2[id='trend'] {
+    color: #643DC8;
+    font-family: 'Paperlogy-7Bold', sans-serif !important;
+    font-weight: bold;
+    font-size: 36px;
+}
+/* insight 글씨 수정 */
+h2[id='insight'] {
+    padding-top: 3rem;
+    color: #F97B19;
+    font-family: 'Paperlogy-7Bold', sans-serif !important;
+    font-weight: bold;
+    font-size: 36px;
+
+}
+
+/*h3 글씨 크기 수정*/
+h3[id="weekly-health-trend"]{
+    font-size: 25px;
+}
+
+h3[id="daily-defect-rate"]{
+    font-size: 25px;
+}
+
+h3[id="bad-wafer-top-10"]{
+    font-size: 25px;
+}
+
+h3[id="selected-wafer-anomaly-feature-s-value"]{
+    font-size: 25px;
+}
+
+h3[id="featured-feature-s-value"]{
+    font-size: 25px;
+}
+
+
+
+
+/* stMetric 내부 콘텐츠를 가로/세로 중앙 정렬 */
+div[data-testid="stMetric"] {
+    display: flex; /* Flexbox 활성화 */
+    flex-direction: column; /* 세로 방향 정렬 */
+    justify-content: center; /* 세로 방향 중앙 정렬 */
+    align-items: center; /* 가로 방향 중앙 정렬 */
+    text-align: center; /* 텍스트 정렬 */
+    height: 100%; /* 부모 높이를 기준으로 정렬 */
+}
+
+/*증가 관련 글자*/
+.st-emotion-cache-1i2ye1v{
+font-size: 23px;
+transform: translateX(-25px); /* 원하는 만큼 왼쪽으로 이동 */
+text-align: center; /* 텍스트를 왼쪽 정렬 */
+}
+
+.st-emotion-cache-17c4ue {
+    transform: translateX(-90px); /* 원하는 만큼 왼쪽으로 이동 */
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+}
+
+/*하락 관련 */
+.st-emotion-cache-1b1cx2n{
+font-size: 23px;
+transform: translateX(-25px); /* 원하는 만큼 왼쪽으로 이동 */
+text-align: center; /* 텍스트를 왼쪽 정렬 */
+}
+
+/*증가 화살표*/
+.st-emotion-cache-1ksdj5j{
+margin-left: 30px;
+justify-content: flex-start; /* 왼쪽 정렬 */
+}
+
+
+
+/* line chart 프레임 */
+canvas.marks {
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #FFFFFF;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    outline: 5px solid #FFFFFF;
+}
+/* chart 프레임 */
+div[class="user-select-none svg-container"] {
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #FFFFFF;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    outline: 5px solid #FFFFFF;
+}
+/* 클릭 이벤트 프레임 */
+iframe[class='stCustomComponentV1 st-emotion-cache-1tvzk6f e9msf260'] {
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #FFFFFF;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    outline: 5px solid #FFFFFF;
+}
+
+
+/*로트 및 웨이퍼 선택 내부 박스 컬러*/
+div[data-baseweb="select"] >div{
+    border-radius: 5px;
+    background-color: #FFFFFF;
+    text-align: center;
+    border: 1px solid #FFFFFF;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    outline: 5px solid #FFFFFF;
+
+}
+
+.gtitle {
+    font-family: 'Paperlogy-7Bold', sans-serif !important;
+    font-weight: bold;
+    font-size: 36px;
+}
+
+.xtitle {
+    font-family: 'Paperlogy-7Bold', sans-serif !important;
+    font-weight: bold;
+    font-size: 36px;
+}
+
+.ytitle {
+    font-family: 'Paperlogy-7Bold', sans-serif !important;
+    font-weight: bold;
+    font-size: 36px;
+}
+
+/*히트맵 부분
+div[class="stColumn st-emotion-cache-rr5o07 eiemyj2"] {
+    border-radius: 5px;
+    overflow: hidden;
+    border: 1px solid #FFFFFF;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    outline: 5px solid #FFFFFF;
+    background: #FFFFFF;
+    height: 487.59px;
+}
+*/
